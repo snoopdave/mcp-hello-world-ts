@@ -1,4 +1,5 @@
-import { type McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { type McpServer, ResourceTemplate, type ListResourcesCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+
 
 /**
  * Available resources in the Hello World server
@@ -30,101 +31,62 @@ const HELLO_RESOURCES = [
 export function registerHelloResources(server: McpServer): void {
   console.error('Registering Hello World resources...');
 
-  // Simple Hello World resource
+  // Define a list function for the list resource
+  const listFunction: ListResourcesCallback = () => ({
+    resources: HELLO_RESOURCES
+  });
+
+  // Create a properly typed undefined for the callback
+  const emptyList = undefined as unknown as ListResourcesCallback;
+
+  // Register the list resource separately for clarity
   server.resource(
-    'HelloWorld',
-    // Use a simple wildcard template to match all hello:// URIs
-    new ResourceTemplate('hello://{*}', {
-      list: () => {
-        console.error('MCP Server: list() called for Hello World resource');
-        return {
-          resources: HELLO_RESOURCES,
-          contents: [
-            {
-              uri: 'hello://list',
-              text: 'Available resources: hello://greeting, hello://info, hello://list',
-              mimeType: 'text/plain',
-            }
-          ],
-        };
-      }
-    }),
-    async (uri, params) => {
-      console.error(`MCP Server: Resource handler called with URI: ${uri}`);
-      
-      try {
-        // Use a consistent approach to handle the URI: if we can't determine it, use a default
-        const uriStr = uri ? String(uri) : 'hello://greeting';
-        
-        // Simple resource type extraction - default to greeting if we can't determine
-        const resourceType = uriStr.startsWith('hello://') 
-          ? uriStr.substring(8).split('?')[0] || 'greeting'
-          : 'greeting';
-          
-        console.error(`MCP Server: Resource type: ${resourceType}`);
-        
-        // Extract name parameter if present
-        let name = 'World';
-        try {
-          const urlObj = new URL(uriStr);
-          name = urlObj.searchParams.get('name') || 'World';
-        } catch (e) {
-          // URL parsing failed, use default name
-          console.error(`MCP Server: Error parsing URL: ${e instanceof Error ? e.message : String(e)}`);
-        }
-        
-        // Handle each resource type with a simplified approach
-        switch (resourceType) {
-          case 'greeting':
-          case '':
-            return {
-              contents: [{
-                uri: 'hello://greeting',
-                text: `Hello, ${name}!`,
-                mimeType: 'text/plain',
-              }]
-            };
-            
-          case 'info':
-            return {
-              contents: [{
-                uri: 'hello://info',
-                text: 'This is a Hello World MCP Server for demonstration purposes.',
-                mimeType: 'text/plain',
-              }]
-            };
-            
-          case 'list':
-            return {
-              resources: HELLO_RESOURCES,
-              contents: [{
-                uri: 'hello://list',
-                text: 'Available resources: hello://greeting, hello://info, hello://list',
-                mimeType: 'text/plain',
-              }]
-            };
-            
-          default:
-            return {
-              contents: [{
-                uri: uriStr,
-                text: `Unknown resource: ${resourceType}. Available resources: greeting, info, list`,
-                mimeType: 'text/plain',
-              }]
-            };
-        }
-      } catch (error) {
-        console.error('MCP Server: Error in hello resource:', error);
-        return {
-          contents: [{
-            uri: 'hello://error',
-            text: `Error processing request: ${error instanceof Error ? error.message : String(error)}`,
-            mimeType: 'text/plain',
-          }]
-        };
-      }
+    'HelloWorldList',
+    new ResourceTemplate('hello://list', { list: listFunction }),
+    async () => {
+      console.error('MCP Server: List resource handler called');
+      return {
+        resources: HELLO_RESOURCES,
+        contents: [{
+          uri: 'hello://list',
+          text: 'Available resources: hello://greeting, hello://info, hello://list',
+          mimeType: 'text/plain',
+        }]
+      };
     }
   );
-  
+
+  // Register the greeting resource
+  server.resource(
+    'HelloWorldGreeting',
+    new ResourceTemplate('hello://greeting', { list: emptyList }),
+    async () => {
+      console.error('MCP Server: Greeting resource handler called');
+      return {
+        contents: [{
+          uri: 'hello://greeting',
+          text: 'Hello, World!',
+          mimeType: 'text/plain',
+        }]
+      };
+    }
+  );
+
+  // Register the info resource
+  server.resource(
+    'HelloWorldInfo',
+    new ResourceTemplate('hello://info', { list: emptyList }),
+    async () => {
+      console.error('MCP Server: Info resource handler called');
+      return {
+        contents: [{
+          uri: 'hello://info',
+          text: 'This is a Hello World MCP Server for demonstration purposes.',
+          mimeType: 'text/plain',
+        }]
+      };
+    }
+  );
+
   console.error('Hello World resources registered successfully');
 }

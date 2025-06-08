@@ -85,14 +85,29 @@ test('Call hello tool with a message', async () => {
 
 test('Navigate to available resources', async () => {
   // First list available resources
-  const listResponse = await client.readResource({ 
-    uri: 'hello://list' 
+  const listResponse = await client.readResource({
+    uri: 'hello://list'
   }) as unknown as ResourceResponse;
+
+  // Check if resources exist
+  expect(listResponse.resources).toBeDefined();
 
   // Extract resource URIs from the response
   const resources = listResponse.resources?.map(r => r.uri) || [];
   console.log("Available resources:", resources);
 
-  // Skip if no resources found
+  // Verify resources count
   expect(resources.length).toBeGreaterThan(0);
+
+  // Verify expected resources are present
+  expect(resources).toContain('hello://greeting');
+  expect(resources).toContain('hello://info');
+  expect(resources).toContain('hello://list');
+
+  // Verify contents exist
+  expect(listResponse.contents).toBeDefined();
+  expect(listResponse.contents.length).toBeGreaterThan(0);
+
+  // Check that the text contains information about available resources
+  expect(listResponse.contents[0].text).toContain('Available resources');
 });

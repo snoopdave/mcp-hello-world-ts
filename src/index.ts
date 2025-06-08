@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {registerHelloResources} from "./resources/helloResource";
-import {registerHelloTool} from "./tools/helloTool";
+import {registerHelloResources} from "./resources/helloResource.js";
+import {registerHelloTool} from "./tools/helloTool.js";
 
 
 /**
@@ -15,7 +15,6 @@ async function main(): Promise<void> {
     description: "A minimal MCP server for Hello World!"
   });
 
-  // Register all functionality using domain-based organization
   console.error('Registering Hello World modules...');
 
   registerHelloResources(server);
