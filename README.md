@@ -1,6 +1,6 @@
 # Hello World MCP Server
 
-A minimal [Model Context Protocol (MCP)](https://github.com/modelcontext/modelcontextprotocol) server written in TypeScript. This project demonstrates how to create MCP-compliant resources and tools for use with LLMs and MCP-enabled clients like [Claude Desktop](https://www.anthropic.com/news/introducing-claude-desktop).
+A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server written in TypeScript. This project demonstrates how to create MCP-compliant resources and tools for use with LLMs and MCP-enabled clients like [Claude Desktop](https://claude.ai/download).
 
 ## Features
 
