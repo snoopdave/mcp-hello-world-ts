@@ -1,8 +1,0 @@
-{
-    "openctx.providers": {
-        "file:///Users/dave/src.sandbox/gen-ai-projects/openctx/provider/modelcontextprotocol/dist/bundle.js": {
-          "nodeCommand": "node",
-          "mcp.provider.uri": "file:///Users/dave/src.sandbox/gen-ai-projects/entitydb/mcp-server/dist/index.js"
-        }
-      }
-}
