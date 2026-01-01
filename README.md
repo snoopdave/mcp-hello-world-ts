@@ -1,10 +1,10 @@
-# Hello World MCP Server
-
-A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server written in TypeScript. This project demonstrates how to create MCP-compliant resources and tools for use with LLMs and MCP-enabled clients like [Claude Desktop](https://claude.ai/download).
-
 <a href="https://glama.ai/mcp/servers/@snoopdave/mcp-hello-world-ts">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@snoopdave/mcp-hello-world-ts/badge" alt="Hello World Server MCP server" />
 </a>
+
+# Hello World MCP Server
+
+A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server written in TypeScript. This project demonstrates how to create MCP-compliant resources and tools for use with LLMs and MCP-enabled clients like [Claude Desktop](https://claude.ai/download).
 
 <img src="https://github.com/user-attachments/assets/ec1973be-d61c-4398-8ab2-a4bae4296e20" alt="8a1b1a9f-ca0d-4815-bb72-6efdab0cfd33" width="300"/>
 
