@@ -1,7 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { registerHelloResources } from "./resources/helloResource.js";
-import { registerHelloTool } from "./tools/helloTool.js";
 import { registerCodexTool } from "./tools/codexTool.js";
 
 
@@ -11,27 +9,25 @@ import { registerCodexTool } from "./tools/codexTool.js";
 async function main(): Promise<void> {
   // Create the MCP Server
   const server = new McpServer({
-    name: "HelloWorldServer",
+    name: "CodexBridgeServer",
     version: "1.0.0",
-    description: "A minimal MCP server for Hello World!"
+    description: "An MCP server that bridges to the Codex CLI."
   });
 
-  console.error('Registering Hello World modules...');
+  console.error("Registering Codex tool...");
 
-  registerHelloResources(server);
-  registerHelloTool(server);
   registerCodexTool(server);
 
   // Create the stdio transport
   const transport = new StdioServerTransport();
 
   // Connect the server to the transport
-  console.error('Hello World MCP Server starting...');
+  console.error("Codex MCP Server starting...");
   try {
     await server.connect(transport);
-    console.error('Hello World MCP Server connected');
+    console.error("Codex MCP Server connected");
   } catch (error) {
-    console.error('Error connecting MCP server:', error);
+    console.error("Error connecting MCP server:", error);
     process.exit(1);
   }
 }

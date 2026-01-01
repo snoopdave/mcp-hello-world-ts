@@ -1,16 +1,10 @@
-# Hello World MCP Server
+# Codex MCP Server
 
-A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server written in TypeScript. This project demonstrates how to create MCP-compliant resources and tools for use with LLMs and MCP-enabled clients like [Claude Desktop](https://claude.ai/download).
+A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server written in TypeScript that bridges MCP clients to the Codex CLI.
 
 <img src="https://github.com/user-attachments/assets/ec1973be-d61c-4398-8ab2-a4bae4296e20" alt="8a1b1a9f-ca0d-4815-bb72-6efdab0cfd33" width="300"/>
 
 ## Features
-
-- **MCP Resources:**  
-  Provides simple resources at `hello://greeting`, `hello://info`, and a resource list at `hello://list`.
-
-- **MCP Tool:**  
-  A `helloTool` that echoes messages or returns a default greeting.
 
 - **Codex Bridge Tool:**  
   A `run_codex` tool that shells out to `codex exec` so MCP clients (like Claude Desktop or Claude Code) can invoke Codex via MCP.
@@ -78,7 +72,7 @@ You can configure Claude Desktop or any MCP client to use this server as a plugi
 Add the following to your Claude Desktop settings (replace the path with your actual project path):
 
 ```json
-"hello-world-mcp": {
+"codex-mcp": {
   "command": "node",
   "args": [
     "/path/to/mcp-hello-world-ts/dist/index.js"
@@ -128,9 +122,7 @@ The tool returns the parsed JSONL event stream (when `json` is enabled), plus `s
 .
 ├── src/
 │   ├── index.ts                # Main MCP server entry point
-│   ├── resources/helloResource.ts  # MCP resource definitions
 │   └── tools/
-│       ├── helloTool.ts      # MCP tool definition
 │       └── codexTool.ts      # Codex CLI bridge tool
 ├── dist/                       # Compiled JS output
 ├── package.json
