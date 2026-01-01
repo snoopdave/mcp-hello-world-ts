@@ -12,6 +12,9 @@ A minimal [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introdu
 - **MCP Tool:**  
   A `helloTool` that echoes messages or returns a default greeting.
 
+- **Codex Bridge Tool:**  
+  A `run_codex` tool that shells out to `codex exec` so MCP clients (like Claude Desktop or Claude Code) can invoke Codex via MCP.
+
 - **Stdio Transport:**  
   Communicates via standard input/output, making it easy to integrate with MCP clients.
 
@@ -88,6 +91,37 @@ Add the following to your Claude Desktop settings (replace the path with your ac
 
 ---
 
+## Using the Codex Bridge Tool
+
+The `run_codex` tool executes `codex exec` inside the target repository. Install the Codex CLI before invoking the tool:
+
+```sh
+npm i -g @openai/codex
+```
+
+### Tool Parameters
+
+- `prompt` (string, required): Task or instruction passed to `codex exec`.
+- `repoPath` (string, optional): Working directory for the command. Defaults to the MCP server working directory.
+- `mode` (`safe` | `full-auto`, optional): Use `full-auto` to enable file edits. Defaults to `safe`.
+- `json` (boolean, optional): Emit JSONL events and return parsed output. Defaults to `true`.
+- `sandbox` (`danger-full-access`, optional): Only set in a controlled sandbox.
+
+### Example Invocation
+
+```json
+{
+  "prompt": "Summarize the repository structure.",
+  "repoPath": "/path/to/repo",
+  "mode": "safe",
+  "json": true
+}
+```
+
+The tool returns the parsed JSONL event stream (when `json` is enabled), plus `stdout`, `stderr`, and the exit status.
+
+---
+
 ## Project Structure
 
 ```
@@ -95,7 +129,9 @@ Add the following to your Claude Desktop settings (replace the path with your ac
 ├── src/
 │   ├── index.ts                # Main MCP server entry point
 │   ├── resources/helloResource.ts  # MCP resource definitions
-│   └── tools/helloTool.ts      # MCP tool definition
+│   └── tools/
+│       ├── helloTool.ts      # MCP tool definition
+│       └── codexTool.ts      # Codex CLI bridge tool
 ├── dist/                       # Compiled JS output
 ├── package.json
 ├── tsconfig.json
