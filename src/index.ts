@@ -1,7 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {registerHelloResources} from "./resources/helloResource.js";
-import {registerHelloTool} from "./tools/helloTool.js";
+import { registerHelloResources } from "./resources/helloResource.js";
+import { registerHelloTool } from "./tools/helloTool.js";
+import { registerCodexTool } from "./tools/codexTool.js";
 
 
 /**
@@ -19,6 +20,7 @@ async function main(): Promise<void> {
 
   registerHelloResources(server);
   registerHelloTool(server);
+  registerCodexTool(server);
 
   // Create the stdio transport
   const transport = new StdioServerTransport();
